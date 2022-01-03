@@ -32,6 +32,10 @@ export default [
         text: "Lazy Loading",
         path: "/lazyloading"
       },
+      {
+        text: "Export",
+        path: "/export"
+      },
       
     ]
   }

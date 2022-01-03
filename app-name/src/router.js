@@ -8,6 +8,8 @@ import Users from "./views/users";
 import NewUsers from "./views/newpopup";
 import NewUsers1 from "./views/modal";
 import LazyLoading from "./views/lazyloading";
+import Export from "./views/export";
+
 
 import defaultLayout from "./layouts/side-nav-outer-toolbar";
 import simpleLayout from "./layouts/single-card";
@@ -80,6 +82,15 @@ const router = new createRouter({
         layout: defaultLayout
       },
       component: LazyLoading
+    },
+    {
+      path: "/export",
+      name: "export",
+      meta: { 
+        requiresAuth: true,
+        layout: defaultLayout
+      },
+      component: Export
     },
     {
       path: "/login-form",

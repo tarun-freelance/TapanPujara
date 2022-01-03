@@ -13,6 +13,10 @@
     "core-js": "^3.6.5",
     "devextreme": "^21.2.4",
     "devextreme-vue": "^21.2.4",
+    "exceljs": "^4.3.0",
+    "file-saver-es": "^2.0.5",
+    "jspdf": "^2.5.0",
+    "jspdf-autotable": "^3.5.23",
     "sass": "^1.34.1",
     "vue": "^3.0.0",
     "vue-router": "^4.0.1"
