@@ -1,87 +1,109 @@
 <template>
   <div id="data-grid-demo">
-  <DxDataGrid
-    :ref="dataGridRef"
-    :data-source="userList"
-    :show-borders="true"
-    key-expr="Id"
-    @row-inserting="addRow"
-    @editing-start="editingStart"
-    @Saving="updateRecord"
-    @exporting="onExporting"
-  >
-    <DxToolbar>
-      <DxItem location="before">
-        <DxButton icon="exportpdf" text="Export to PDF" @click="exportGrid()" />
-      </DxItem>
-      <DxItem location="before">
-        <DxButton
-          text="Export to EXCEL"
-          icon="xlsxfile"
-          @click="onExporting($event)"
-        />
-      </DxItem>
-      <DxItem name="addRowButton" />
-    </DxToolbar>
-    <DxFilterRow :visible="true" />
-    <DxPaging :enabled="true" :page-size="10" :page-index="1" />
-    <DxEditing
-      :allow-updating="true"
-      :allow-adding="true"
-      :allow-deleting="true"
-      mode="popup"
+    <DxDataGrid
+      :ref="dataGridRef"
+      :data-source="userList"
+      :show-borders="true"
+      key-expr="Id"
+      @row-inserting="addRow"
+      @editing-start="editingStart"
+      @Saving="updateRecord"
+      @exporting="onExporting"
     >
-      <DxPopup
-        :show-title="true"
-        :width="700"
-        :height="525"
-        title="Employee Information 123"
-      />
-      <DxForm :show-colon-after-label="true">
-        <DxItem :col-count="2" :col-span="2" item-type="group">
-          <DxItem data-field="Name">
-            <DxRequiredRule message="Name is required" />
-          </DxItem>
-          <DxItem data-field="City" />
-          <DxItem data-field="DOB">
-            <DxRequiredRule message="DOB is required" />
-          </DxItem>
-          <DxItem data-field="Gender">
-            <template #default>
-              <DxRadioGroup
-                :items="genderValues"
-                value-expr="id"
-                display-expr="text"
-                v-model="selectedGender"
-                layout="horizontal"
-                @value-changed="radioChanged"
-              />
-            </template>
-          </DxItem>
-          <DxItem data-field="IsActivated" editor-type="dxCheckBox" />
-          <DxItem data-field="StateId">
-            <DxRequiredRule message="State is required" />
-          </DxItem>
+      <DxToolbar>
+        <DxItem location="after">
+          <DxDropDownButton
+            :items="downloads"
+            :drop-down-options="{ width: 230 }"
+            text="Export"
+            icon="download"
+            @item-click="onItemClick"
+            class="buttoncenter"
+          />
         </DxItem>
-      </DxForm>
-    </DxEditing>
-    <DxColumn data-field="Name" caption="Title" />
-    <DxColumn data-field="City" />
-    <DxColumn data-field="DOB" data-type="date" />
-    <DxColumn :visible="true" data-field="Gender" />
-    <DxColumn :visible="false" data-field="IsActivated" data-type="boolean" />
-    <DxColumn :width="125" data-field="StateId" caption="State">
-      <DxLookup
-        :data-source="states"
-        value-expr="Id"
-        display-expr="StateName"
-      />
-    </DxColumn>
-  </DxDataGrid>
+        <DxItem location="before" template="groupingTemplate" />
+        <DxItem location="before" template="groupingTemplate1" />
+        <DxItem location="before" template="refreshTemplate" />
+        <DxItem name="addRowButton" class="buttoncenter" />
+      </DxToolbar>
+      <template #groupingTemplate>
+        <span>From Date</span>
+        <DxDateBox :value="now" type="date" width="200" />
+      </template>
+      <template #groupingTemplate1>
+        <span>To Date</span>
+        <DxDateBox :value="now" type="date" width="200" />
+      </template>
+      <template #refreshTemplate>
+        <DxButton
+          icon="search"
+          @click="refreshDataGrid"
+          text="Search"
+          class="buttoncenter"
+        />
+      </template>
+      <DxFilterRow :visible="true" />
+      <DxPaging :enabled="true" :page-size="10" :page-index="1" />
+      <DxEditing
+        :allow-updating="true"
+        :allow-adding="true"
+        :allow-deleting="true"
+        mode="popup"
+      >
+        <DxPopup
+          :show-title="true"
+          :width="700"
+          :height="525"
+          title="Employee Information 123"
+        />
+        <DxForm :show-colon-after-label="true">
+          <DxItem :col-count="2" :col-span="2" item-type="group">
+            <DxItem data-field="Name">
+              <DxRequiredRule message="Name is required" />
+            </DxItem>
+            <DxItem data-field="City" />
+            <DxItem data-field="DOB">
+              <DxRequiredRule message="DOB is required" />
+            </DxItem>
+            <DxItem data-field="Gender">
+              <template #default>
+                <DxRadioGroup
+                  :items="genderValues"
+                  value-expr="id"
+                  display-expr="text"
+                  v-model="selectedGender"
+                  layout="horizontal"
+                  @value-changed="radioChanged"
+                />
+              </template>
+            </DxItem>
+            <DxItem data-field="IsActivated" editor-type="dxCheckBox" />
+            <DxItem data-field="StateId">
+              <DxRequiredRule message="State is required" />
+            </DxItem>
+          </DxItem>
+        </DxForm>
+      </DxEditing>
+      <DxColumn data-field="Name" caption="Title" />
+      <DxColumn data-field="City" />
+      <DxColumn data-field="DOB" data-type="date" />
+      <DxColumn :visible="true" data-field="Gender" />
+      <DxColumn :visible="false" data-field="IsActivated" data-type="boolean" />
+      <DxColumn :width="125" data-field="StateId" caption="State">
+        <DxLookup
+          :data-source="states"
+          value-expr="Id"
+          display-expr="StateName"
+        />
+      </DxColumn>
+    </DxDataGrid>
   </div>
 </template>
 <script>
+import DxDropDownButton from "devextreme-vue/drop-down-button";
 import DxButton from "devextreme-vue/button";
+import DxDateBox from "devextreme-vue/date-box";
+//import DxFilterBuilder from "devextreme-vue/filter-builder";
 import {
   DxDataGrid,
   DxColumn,
@@ -93,7 +115,7 @@ import {
   DxFilterRow,
   DxToolbar,
 } from "devextreme-vue/data-grid";
-import { DxRequiredRule, DxItem  } from "devextreme-vue/form";
+import { DxRequiredRule, DxItem } from "devextreme-vue/form";
 import DxRadioGroup from "devextreme-vue/radio-group";
 import { CommonUtility } from "../js/crud";
 import { fields, filter } from "../js/data1";
@@ -121,9 +143,12 @@ export default {
     DxFilterRow,
     DxToolbar,
     DxButton,
+    DxDateBox,
+    DxDropDownButton,
   },
   data() {
     return {
+      downloads: ["Export To PDF", "Export To Excel"],
       filter,
       fields,
       userList: [],
@@ -147,7 +172,14 @@ export default {
     },
   },
   methods: {
-    onExporting(e) {
+    onItemClick(e) {
+      if (e.itemData === "Export To PDF") {
+        this.exportGridToPDF();
+      } else {
+        this.exportGridToExcel();
+      }
+    },
+    exportGridToExcel() {
       const workbook = new Workbook();
       const worksheet = workbook.addWorksheet("Employees");
 
@@ -163,9 +195,8 @@ export default {
           );
         });
       });
-      e.cancel = true;
     },
-    exportGrid() {
+    exportGridToPDF() {
       const doc = new jsPDF("p", "pt", "a4");
       exportDataGridToPdf({
         jsPDFDocument: doc,
@@ -270,7 +301,24 @@ export default {
 };
 </script>
 <style>
-#data-grid-demo {
-  min-height: 700px;
+.dx-datagrid-header-panel {
+  padding: 10;
+}
+
+.dx-datagrid-header-panel .dx-toolbar {
+  margin: 0;
+  padding-right: 20px;
+  background-color: transparent;
+}
+
+.dx-datagrid-header-panel .dx-toolbar-items-container {
+  height: 100px;
+}
+
+.buttoncenter {
+  margin-top: 20px;
+}
+.dx-datagrid-addrow-button {
+  margin-top: 20px;
 }
 </style>

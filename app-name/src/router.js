@@ -9,6 +9,7 @@ import NewUsers from "./views/newpopup";
 import NewUsers1 from "./views/modal";
 import LazyLoading from "./views/lazyloading";
 import Export from "./views/export";
+import ExportNew from "./views/exportnew";
 
 
 import defaultLayout from "./layouts/side-nav-outer-toolbar";
@@ -91,6 +92,15 @@ const router = new createRouter({
         layout: defaultLayout
       },
       component: Export
+    },
+    {
+      path: "/exportnew",
+      name: "exportnew",
+      meta: { 
+        requiresAuth: true,
+        layout: defaultLayout
+      },
+      component: ExportNew
     },
     {
       path: "/login-form",

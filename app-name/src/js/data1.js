@@ -4,6 +4,25 @@ const random = function() {
   return s % (10 - 1);
 };
 
+export const filter = [
+  ['Product_ID', '=', new Date],
+  'and',
+  [
+    'Product_Name', '=', new Date,
+  ],
+];
+export const fields = [
+  {
+    caption: 'ID',
+    width: 50,
+    dataField: 'Product_ID',
+    dataType: 'date',
+  }, {
+    dataField: 'Product_Name',
+    dataType: 'date',
+  }
+];
+
 export const generateData = function(count) {
   let i;
   const surnames = ['Smith', 'Johnson', 'Brown', 'Taylor', 'Anderson', 'Harris', 'Clark', 'Allen', 'Scott', 'Carter'];

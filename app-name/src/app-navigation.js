@@ -36,6 +36,10 @@ export default [
         text: "Export",
         path: "/export"
       },
+      {
+        text: "Export New",
+        path: "/exportnew"
+      },
       
     ]
   }
